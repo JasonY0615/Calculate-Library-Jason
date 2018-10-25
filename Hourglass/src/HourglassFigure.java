@@ -11,7 +11,9 @@ public class HourglassFigure {
 		for (int i = 1; i <= num; i ++) {
 				System.out.print(str);
 			}
-		}
 	}
+    public static void main1 (String [] args ) {
+    	
+    }
 
 
