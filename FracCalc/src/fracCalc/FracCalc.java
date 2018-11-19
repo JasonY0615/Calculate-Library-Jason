@@ -5,9 +5,14 @@ import java.util.Scanner;
 public class FracCalc {
 
     public static void main(String[] args) {
-    	Scanner UserInput = new Scanner(System.in); 
-    	
-
+    	Scanner UserInput = new Scanner(System.in);
+    	System.out.print(“Enter a fraction problem:  ”); 
+    	String userResponse = s.nextline(); 
+    	While(!userResponse.equals(“quit”)) { 
+    		System.out.println(producerAnswer(userResponse)); 
+    		System.out.println(“Enter a fraction problem:  ”); 
+    		Userresponse = s.nextLine(); 
+    	}   
     }
     
     // ** IMPORTANT ** DO NOT DELETE THIS FUNCTION.  This function will be used to test your code
