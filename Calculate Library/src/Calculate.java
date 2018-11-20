@@ -28,7 +28,7 @@ public class Calculate {
 		return b * b - 4 * b * c;
 	}
 	// return Improper Fraction(String) when input three mixed numbers(int)
-	public static String toImproperfrac(int wholenumber, int numerator, int denominator) {
+	public static String toImproperFrac(int wholenumber, int numerator, int denominator) {
 		int fraction = denominator * wholenumber + numerator; 
 		return fraction + "/" + denominator; 
 	}
@@ -44,7 +44,7 @@ public class Calculate {
 		int i = b * c; 
 		int l = b * d; 
 		int oi = o + i;
-		return f + x + "^2" +  "+" + oi + x + "+" + 1;	
+		return f + x + "^2" +  "+" + oi + x + "+" + l;	
 	}
 	public static boolean isDivisibleBy(int a, int b) {
 		if (b == 0) throw new IllegalArgumentException ("can't divided by factor of 0");
@@ -169,20 +169,17 @@ public class Calculate {
 		}while ((t - squareRoot) != 0 ); 
 		return squareRoot; 
 	}
-	public static String quadFrom(double a, double b, double c) {
-		if (discriminant(a, b, c) < 0) { 
+	public static String quadForm(double a, double b, double c) {
+		if (( b * b) - (4 * a * c) < 0) { 
 			return "no real roots"; 
-		}else if(discriminant(a, b, c) == 0) {
+		}else if(( b * b) - (4 * a * c) == 0) {
 			return round2(-1*b/(2*a))+"";
 		}else {
-			double result1 = (((-1*b) + sqrt(discriminant(a, b, c)))); 
-			result1 = result1/(2*a);
-			double result2 = (((-1*b) - sqrt(discriminant(a, b, c)))); 
-			result2 = result2/(2*a);
+			double result1 = (((-1*b) + sqrt(( b * b) - (4 * a * c)))/(2*a)); 
+			double result2 = (((-1*b) - sqrt(( b * b) - (4 * a * c)))/(2*a)); 
 			return round2(result1) + " and " + round2(result2);
 		}
-	} 
-	
+	} 	
 	
 }
 
