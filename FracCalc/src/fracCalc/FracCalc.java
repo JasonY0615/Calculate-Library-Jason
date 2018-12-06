@@ -7,11 +7,12 @@ public class FracCalc {
     public static void main(String[] args) {
     	Scanner UserInput = new Scanner(System.in);
     	System.out.print("Enter a fraction problem:  "); 
-    	String userResponse = UserInput.next(); 
+    	String userResponse = UserInput.nextLine(); 
+    	
     	while(!userResponse.equals("quit")) { 
     		System.out.println(produceAnswer(userResponse)); 
     		System.out.println("Enter a fraction problem: "); 
-    		userResponse = UserInput.next(); 
+    		userResponse = UserInput.nextLine(); 
     	}   
     	UserInput.close();                       
     }
@@ -26,13 +27,9 @@ public class FracCalc {
     //      e.g. return ==> "1_1/4"
     public static String produceAnswer(String input)
     { 
-    	Scanner UserInput = new Scanner(input); 
     	String operand1 = input.split(" ")[0];
     	String operator = input.split(" ")[1];
     	String operand2 = input.split(" ")[2]; 
-    	
- //   	return operand2; 
-
         
     	int op1Whole = 0; 
     	int op1Num = 0; 
@@ -48,14 +45,16 @@ public class FracCalc {
               else {
             	  op1Num = (op1Whole * op1Deno) + op1Num;
               }
-            
             }
+            else {
+            	op1Whole = 0;             
+        }
         }
             else {
-            	op1Whole = Integer.parseInt(operand1);
-            	op1Deno = 1; 
-
-        }
+            	op1Num = Integer.parseInt(operand1);
+            	op1Deno = 1;
+            }
+    
         
     	int op2Whole = 0; 
     	int op2Num = 0; 
@@ -63,27 +62,29 @@ public class FracCalc {
         if (operand2.indexOf("/") != -1){
             op2Num = Integer.parseInt(operand2.substring(operand2.indexOf("_") + 1, operand2.indexOf("/")));
             op2Deno = Integer.parseInt(operand2.substring(operand2.indexOf("/") + 1, operand2.length()));        	       	
-        	if (operand1.indexOf("_") != -1){
+        	if (operand2.indexOf("_") != -1){
             op2Whole = Integer.parseInt(operand2.substring(0, operand2.indexOf("_")));
-            if(op1Whole <0) {
+            if(op2Whole <0) {
             	op2Num = (op2Whole * op2Deno) - op2Num;
             }
-        }else{
+        	else{
         		op2Num = (op2Whole * op2Deno) + op2Num; 
-         }
-       
-          
-        }else {
-          	op2Whole = Integer.parseInt(operand2);
+        	}
+        }
+        	else {
+        		op2Whole = 0; 
+        	}       
+          }
+        else {
+          	op2Num = Integer.parseInt(operand2);
           	op2Deno = 1;
-          	
         }
 
-  
-        UserInput.close();
-        String answer = "0";
+
+    	String answer = "0";
+
         if(operator.equals("+")) { 
-        	answer = (Addition(op1Num, op1Deno, op2Num, op2Deno, op1Whole, op2Whole));  
+        	answer = (Addition(op1Num, op1Deno, op2Num, op2Deno));  
         }
         else if(operator.equals("-")) { 
         	answer = (Subtraction(op1Num, op1Deno, op2Num, op2Deno)); 
@@ -99,19 +100,58 @@ public class FracCalc {
                
        //return "whole:" + op2Whole + " " + "numerator:" + op2Num + " " + "denominator:" + op2Deno;
 
-        // TODO: Implement this function to produce the solution to the input
+        // TODO: Implement this function to produce the solution to the input*/
+        
     }
-       
-    public static String Addition(int op1newNum, int op2newNum, int op1Deno, int op2Deno) { 
-
+     
+	public static String Addition(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+		
     	if(op1Deno == op2Deno) {
-    		return op1newNum + op2newNum + "/" + op1Deno; 
+    		return (op1Num + op2Num) + "/" + op1Deno; 
     	}else { 
-    		return op1newNum + op2newNum + "/" + op1Deno * op2Deno;   	
+    		return ((op1Num*op2Deno) + (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
+    	}
+	}
+ 
+    
+    public static String Subtraction(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+
+        if(op1Deno == op2Deno) {
+        	return (op1Num - op2Num) + "/" + op1Deno; 
+        }else { 
+        	return ((op1Num*op2Deno) - (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
+        }
     }
  
+     
+    public static String Mutiplication(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+
+        	return((op1Num*op2Num) + "/" + (op1Deno*op2Deno)); 
+    }
+    
+	public static String Division(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+
+			return((op1Num*op2Deno) + "/" + (op1Deno*op2Num));
+    }
 
     // TODO: Fill in the space below with any helper methods that you think you will need
     
+	public static int Gcd( int a, int b ) {
+        if ( b == 0 )
+            return a;
+        else
+            return Gcd( a, a%b );
+    }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
 }
-}
+
+
