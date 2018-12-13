@@ -81,22 +81,24 @@ public class FracCalc {
         }
 
 
-    	String answer = "0";
+    	int[] answer= {0,0,1};
 
         if(operator.equals("+")) { 
-        	answer = (Addition(op1Num, op1Deno, op2Num, op2Deno));  
+        	answer = (addition(op1Num, op1Deno, op2Num, op2Deno));  
         }
         else if(operator.equals("-")) { 
-        	answer = (Subtraction(op1Num, op1Deno, op2Num, op2Deno)); 
+        	answer = (subtraction(op1Num, op1Deno, op2Num, op2Deno)); 
         }
         else if(operator.equals("*")) { 
-        	answer = (Mutiplication(op1Num, op1Deno, op2Num, op2Deno));
+        	answer = (mutiplication(op1Num, op1Deno, op2Num, op2Deno));
         }
         else if(operator.equals("/")) { 
         	answer = (Division(op1Num, op1Deno, op2Num, op2Deno)); 
         }
+        reducedNum(answer);
         
-        return (answer); 
+        //tomixednum answer
+         return (toMixedNum(answer)); 
                
        //return "whole:" + op2Whole + " " + "numerator:" + op2Num + " " + "denominator:" + op2Deno;
 
@@ -104,54 +106,101 @@ public class FracCalc {
         
     }
      
-	public static String Addition(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-		
+	public static int[] addition(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+		int[] answer= {0,0,1};
     	if(op1Deno == op2Deno) {
-    		return (op1Num + op2Num) + "/" + op1Deno; 
+    		answer[1]= op1Num + op2Num;
+    		answer[2]= op1Deno;
+    		//	return (op1Num + op2Num) + "/" + op1Deno; 
     	}else { 
-    		return ((op1Num*op2Deno) + (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
+    		answer[1]= (op1Num*op2Deno) + (op2Num*op1Deno);
+    		answer[2]= op1Deno * op2Deno;
+    		//	return ((op1Num*op2Deno) + (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
     	}
+    	return answer;
 	}
  
     
-    public static String Subtraction(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-
+    public static int[] subtraction(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+    	int[] answer= {0,0,1};
         if(op1Deno == op2Deno) {
-        	return (op1Num - op2Num) + "/" + op1Deno; 
+        	answer[1]= op1Num - op2Num;
+    		answer[2]= op1Deno;
+        	 
         }else { 
-        	return ((op1Num*op2Deno) - (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
+        	answer[1]= (op1Num*op2Deno) - (op2Num*op1Deno);
+    		answer[2]= op1Deno * op2Deno;
+        	//return ((op1Num*op2Deno) - (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
         }
+        return answer; 
     }
  
      
-    public static String Mutiplication(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-
-        	return((op1Num*op2Num) + "/" + (op1Deno*op2Deno)); 
+    public static int[] mutiplication(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+    	int[] answer= {0,0,1}; 
+    	answer[1] = (op1Num*op2Num); 
+    	answer[2] = (op1Deno*op2Deno); 
+        return answer; 
     }
     
-	public static String Division(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-
-			return((op1Num*op2Deno) + "/" + (op1Deno*op2Num));
+	public static int[] Division(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
+    	int[] answer= {0,0,1};
+    	answer[1] =  (op1Num*op2Deno); 
+    	answer[2] = (op1Deno*op2Num); 
+    	return answer; 
     }
 
     // TODO: Fill in the space below with any helper methods that you think you will need
     
-	public static int Gcd( int a, int b ) {
-        if ( b == 0 )
-            return a;
-        else
-            return Gcd( a, a%b );
-    }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+	public static int gcf(int x, int y) {
+		int min = Math.min(x, y);
+		int max = 1;
+		for(int i = 1; i <= min; i++) {
+			if(isDivisibleBy(x, i) && isDivisibleBy(y, i)) {
+				if(i > max) {
+					max = i;
+				}
+			}
+		}
+
+	return max;
+	} 
+	public static boolean isDivisibleBy(int a, int b) {
+		if (b == 0) throw new IllegalArgumentException ("can't divided by factor of 0");
+		if(a % b == 0) {
+			return true;
+		}else { 
+			return false;
+		}
+	}
+	
+	public static void reducedNum (int[] answer) { 
+		 int[] temp={0,0,1};
+		//use gcf to reduce
+		temp[1] = answer[1] / gcf(answer[1],answer[2]); 
+		temp[2] = answer[2] / gcf(answer[1],answer[2]); 
+		answer = temp;
+	}
+	//return mixed number(String) when input numerator and denominator
+		public static String toMixedNum(int[] answer) { 
+			answer[0] = answer[1] / answer[2]; 
+			answer[1] = answer[1] % answer[2]; 
+			String answerStr="";
+			if (answer[0] != 0) { 
+				answerStr += answer[0];  
+				if (answer[1] != 0) { 
+					answerStr += answer[1] + "/" + answer[2];
+				}
+			}
+			else { 
+				answerStr += answer[1] + "/" + answer[2];
+			}
+			return answerStr;	
+		}
+   
 }
+
+// I have to deal with the mutiplication when it is = 0; 
+
 
 
