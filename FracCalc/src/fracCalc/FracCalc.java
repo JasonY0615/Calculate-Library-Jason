@@ -98,7 +98,7 @@ public class FracCalc {
         reducedNum(answer);
         
         //tomixednum answer
-         return (toMixedNum(answer)); 
+         return (toMixedNum(reducedNum(answer))); 
                
        //return "whole:" + op2Whole + " " + "numerator:" + op2Num + " " + "denominator:" + op2Deno;
 
@@ -138,8 +138,8 @@ public class FracCalc {
      
     public static int[] mutiplication(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
     	int[] answer= {0,0,1}; 
-    	answer[1] = (op1Num*op2Num); 
-    	answer[2] = (op1Deno*op2Deno); 
+    	answer[1] = op1Num * op2Num;
+    	answer[2] = op1Deno * op2Deno;
         return answer; 
     }
     
@@ -174,26 +174,31 @@ public class FracCalc {
 		}
 	}
 	
-	public static void reducedNum (int[] answer) { 
+	public static int[] reducedNum (int[] answer) { 
 		 int[] temp={0,0,1};
 		//use gcf to reduce
 		temp[1] = answer[1] / gcf(answer[1],answer[2]); 
 		temp[2] = answer[2] / gcf(answer[1],answer[2]); 
-		answer = temp;
+		return temp;
 	}
 	//return mixed number(String) when input numerator and denominator
 		public static String toMixedNum(int[] answer) { 
-			answer[0] = answer[1] / answer[2]; 
-			answer[1] = answer[1] % answer[2]; 
+			int mixedwhole = answer[1] / answer[2]; 
+			int mixedremainder = answer[1] % answer[2]; 
 			String answerStr="";
-			if (answer[0] != 0) { 
+			if (mixedwhole != 0) { 
 				answerStr += answer[0];  
 				if (answer[1] != 0) { 
-					answerStr += answer[1] + "/" + answer[2];
+					answerStr += "_" + answer[1] + "/" + answer[2];
 				}
 			}
 			else { 
+				if(mixedremainder !=0) {
 				answerStr += answer[1] + "/" + answer[2];
+				}
+				else {
+					answerStr += "0";
+				}
 			}
 			return answerStr;	
 		}
