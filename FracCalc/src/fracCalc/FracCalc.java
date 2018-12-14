@@ -107,14 +107,14 @@ public class FracCalc {
     }
      
 	public static int[] addition(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-		int[] answer= {0,0,1};
+		int[] answer= {0,1};
     	if(op1Deno == op2Deno) {
-    		answer[1]= op1Num + op2Num;
-    		answer[2]= op1Deno;
+    		answer[0]= op1Num + op2Num;
+    		answer[1]= op1Deno;
     		//	return (op1Num + op2Num) + "/" + op1Deno; 
     	}else { 
-    		answer[1]= (op1Num*op2Deno) + (op2Num*op1Deno);
-    		answer[2]= op1Deno * op2Deno;
+    		answer[0]= (op1Num*op2Deno) + (op2Num*op1Deno);
+    		answer[1]= op1Deno * op2Deno;
     		//	return ((op1Num*op2Deno) + (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
     	}
     	return answer;
@@ -122,14 +122,14 @@ public class FracCalc {
  
     
     public static int[] subtraction(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-    	int[] answer= {0,0,1};
+    	int[] answer= {0,1};
         if(op1Deno == op2Deno) {
-        	answer[1]= op1Num - op2Num;
-    		answer[2]= op1Deno;
+        	answer[0]= op1Num - op2Num;
+    		answer[1]= op1Deno;
         	 
         }else { 
-        	answer[1]= (op1Num*op2Deno) - (op2Num*op1Deno);
-    		answer[2]= op1Deno * op2Deno;
+        	answer[0]= (op1Num*op2Deno) - (op2Num*op1Deno);
+    		answer[1]= op1Deno * op2Deno;
         	//return ((op1Num*op2Deno) - (op2Num*op1Deno)) + "/" + op1Deno * op2Deno;
         }
         return answer; 
@@ -137,16 +137,16 @@ public class FracCalc {
  
      
     public static int[] mutiplication(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-    	int[] answer= {0,0,1}; 
-    	answer[1] = op1Num * op2Num;
-    	answer[2] = op1Deno * op2Deno;
+    	int[] answer= {0,1}; 
+    	answer[0] = op1Num * op2Num;
+    	answer[1] = op1Deno * op2Deno;
         return answer; 
     }
     
 	public static int[] Division(int op1Num, int op1Deno, int op2Num, int op2Deno) { 
-    	int[] answer= {0,0,1};
-    	answer[1] =  (op1Num*op2Deno); 
-    	answer[2] = (op1Deno*op2Num); 
+    	int[] answer= {0,1};
+    	answer[0] =  (op1Num*op2Deno); 
+    	answer[1] = (op1Deno*op2Num); 
     	return answer; 
     }
 
@@ -175,31 +175,32 @@ public class FracCalc {
 	}
 	
 	public static int[] reducedNum (int[] answer) { 
-		 int[] temp={0,0,1};
+		 int[] temp={0,1};
 		//use gcf to reduce
-		temp[1] = answer[1] / gcf(answer[1],answer[2]); 
-		temp[2] = answer[2] / gcf(answer[1],answer[2]); 
+		temp[0] = answer[1] / gcf(answer[0],answer[1]); 
+		temp[0] = answer[1] / gcf(answer[0],answer[1]); 
 		return temp;
 	}
 	//return mixed number(String) when input numerator and denominator
 		public static String toMixedNum(int[] answer) { 
-			int mixedwhole = answer[1] / answer[2]; 
-			int mixedremainder = answer[1] % answer[2]; 
+			int mixedwhole = answer[0] / answer[1]; 
+			int mixedremainder = answer[0] % answer[1]; 
+			int denominator = answer[1];
 			String answerStr="";
 			if (mixedwhole != 0) { 
-				answerStr += answer[0];  
+				answerStr += mixedwhole;  
 				if (answer[1] != 0) { 
-					answerStr += "_" + answer[1] + "/" + answer[2];
+					answerStr += mixedwhole + "_"+ mixedremainder + "/" + denominator;
 				}
 			}
 			else { 
 				if(mixedremainder !=0) {
-				answerStr += answer[1] + "/" + answer[2];
+				answerStr += mixedwhole + mixedremainder; 
 				}
 				else {
 					answerStr += "0";
 				}
-			}
+			}               
 			return answerStr;	
 		}
    
