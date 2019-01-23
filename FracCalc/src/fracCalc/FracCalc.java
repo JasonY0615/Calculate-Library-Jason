@@ -1,5 +1,6 @@
 package fracCalc;
 
+import java.util.Arrays;
 import java.util.Scanner; 
 
 public class FracCalc {
@@ -81,7 +82,7 @@ public class FracCalc {
         }
 
 
-    	int[] answer= {0,0,1};
+    	int[] answer= {0,1};
 
         if(operator.equals("+")) { 
         	answer = (addition(op1Num, op1Deno, op2Num, op2Deno));  
@@ -95,8 +96,8 @@ public class FracCalc {
         else if(operator.equals("/")) { 
         	answer = (Division(op1Num, op1Deno, op2Num, op2Deno)); 
         }
-        reducedNum(answer);
         
+        //System.out.println(answer[0] + "/" + answer[1]);
         //tomixednum answer
          return (toMixedNum(reducedNum(answer))); 
                
@@ -152,61 +153,67 @@ public class FracCalc {
 
     // TODO: Fill in the space below with any helper methods that you think you will need
     
-	public static int gcf(int x, int y) {
-		int min = Math.min(x, y);
-		int max = 1;
-		for(int i = 1; i <= min; i++) {
-			if(isDivisibleBy(x, i) && isDivisibleBy(y, i)) {
-				if(i > max) {
-					max = i;
-				}
-			}
+	public static int gcf(int a, int b) { // a & b are the numerators and denominators, b is the initial denominator 
+	if( b == 0) { //checks if b = 0
+		return a; // if b = 0 then returns the value of a
 		}
-
-	return max;
+	else { // if b is not equal to zero
+		return gcf(b, a%b); //then does gcf again, with 'b' as the 'a'-input and the remainder of a/b as the 'b'-input
+		}
 	} 
-	public static boolean isDivisibleBy(int a, int b) {
-		if (b == 0) throw new IllegalArgumentException ("can't divided by factor of 0");
-		if(a % b == 0) {
-			return true;
-		}else { 
-			return false;
-		}
-	}
+
 	
 	public static int[] reducedNum (int[] answer) { 
 		 int[] temp={0,1};
 		//use gcf to reduce
-		temp[0] = answer[1] / gcf(answer[0],answer[1]); 
-		temp[0] = answer[1] / gcf(answer[0],answer[1]); 
+		temp[0] = answer[0] / gcf(answer[0],answer[1]); 
+		temp[1] = answer[1] / gcf(answer[0],answer[1]); 
 		return temp;
 	}
 	//return mixed number(String) when input numerator and denominator
 		public static String toMixedNum(int[] answer) { 
-			int mixedwhole = answer[0] / answer[1]; 
-			int mixedremainder = answer[0] % answer[1]; 
-			int denominator = answer[1];
+			int wholenum= answer[0] / answer[1]; // whole
+			int remainder= answer[0] % answer[1]; // remainder
+			int denominator = answer[1]
+;			
 			String answerStr="";
-			if (mixedwhole != 0) { 
-				answerStr += mixedwhole;  
-				if (answer[1] != 0) { 
-					answerStr += mixedwhole + "_"+ mixedremainder + "/" + denominator;
+			if (wholenum != 0) {   
+				if (remainder != 0) {
+					if (wholenum < 0) {
+						remainder = remainder * -1; 
+						answerStr = wholenum + "_" + remainder + "/" + denominator; 
+					}
+					if (remainder < 0 && denominator <0) {
+						remainder = remainder * -1; 
+						denominator = denominator * -1; 
+						answerStr = wholenum + "_" + remainder + "/" + denominator;
+					}
+					else { 
+					answerStr = wholenum + "_" + remainder + "/" + denominator ;
+				}
+				}// if both num and deno are nega then return posi
+				else { 
+					if(denominator == 1) {
+						answerStr = Integer.toString(wholenum);
+					}
+					else if (denominator == -1) {
+						wholenum = wholenum * -1; 
+						answerStr = Integer.toString(wholenum);
+					}
+					                                                          
 				}
 			}
 			else { 
-				if(mixedremainder !=0) {
-				answerStr += mixedwhole + mixedremainder; 
+				if (remainder != 0) {
+					answerStr = remainder + "/" + denominator; 
 				}
 				else {
-					answerStr += "0";
+					answerStr = "0"; 
 				}
-			}               
+			}
+				
 			return answerStr;	
 		}
-   
-}
+	}
 
-// I have to deal with the mutiplication when it is = 0; 
-
-
-
+// I have to deal with the mutiplication when it is = 0;
